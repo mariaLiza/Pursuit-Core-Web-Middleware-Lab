@@ -42,9 +42,21 @@ app.get("/animal", (req, res) => {
   res.json(animal)
 })
 
-app.get("/animal/:type", (req, res) => {
-//   console.log(req.params)
+const isAnimal = (req, res, next) => {
+  let passed
+  animal.forEach(el => {
+    if (req.params.type === el.type) {
+      passed = el.type
+      res.json({ status: "sucess", message: true })
+    } 
+})
+    if (!passed) {
+       throw new Error("Animal not found") 
+    }
+  next()
+}
 
+app.get("/animal/:type", isAnimal, (req, res) => {
   res.json(req.params.type)
 })
 
@@ -53,17 +65,7 @@ app.get("/animal/:id", (req, res) => {
   res.json(animal[req.params.id])
 })
 
-// app.get("/animal/:animals/:type", (req, res) => {
-//   console.log(req.params)
-//   res.json({ animal: req.params })
-// })
-
-// const middlewareA = (req, res, next) => {
-//     console.log("Middleweare A has been fired")
-//     next();
-// }
-// app.use(middlewareA);
 
 app.listen(port, () => {
-  console.log("Listening to port ", +port)
+  console.log("Listening to port ", + port)
 })
