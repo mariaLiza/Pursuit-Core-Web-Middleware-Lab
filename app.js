@@ -10,62 +10,56 @@ app.use(cors())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
-// const animal = {
-//   animals: [
-//     { species: "mammals", type: "lion" },
-//     { species: "mammals", type: "rabbit" },
-//     { species: "birds", type: "peacock" },
-//     { species: "birds", type: "nyc-pigeon" },
-//     { species: "fish", type: "blob-fish" },
-//     { species: "fish", type: "clownfish" },
-//     { species: "reptile", type: "crocodile" },
-//     { species: "reptile", type: "snake" }
-//   ]
-// }
-
-const animal = [
+const animals = [
   { type: "lion" },
   { type: "rabbit" },
+  { type: "dolphin" },
+  { type: "horse" },
   { type: "peacock" },
   { type: "nyc-pigeon" },
+  { type: "eagle" },
+  { type: "flamingo" },
   { type: "blob-fish" },
   { type: "clownfish" },
+  { type: "octopus" },
+  { type: "seahorse" },
   { type: "crocodile" },
-  { type: "snake" }
+  { type: "snake" },
+  { type: "frog" },
+  { type: "iguana" }
 ]
 
 app.get("/", (req, res) => {
-  res.json("Hello world")
+  res.json("Hello World")
 })
 
-app.get("/animal", (req, res) => {
-  res.json(animal)
+app.get("/animals", (req, res) => {
+  res.json(animals)
 })
 
 const isAnimal = (req, res, next) => {
   let passed
-  animal.forEach(el => {
+  animals.forEach(el => {
     if (req.params.type === el.type) {
       passed = el.type
       res.json({ status: "sucess", message: true })
-    } 
-})
-    if (!passed) {
-       throw new Error("Animal not found") 
     }
+  })
+  if (!passed) {
+    throw new Error("Animal not found")
+  }
   next()
 }
 
-app.get("/animal/:type", isAnimal, (req, res) => {
+app.get("/animals/:type", isAnimal, (req, res) => {
   res.json(req.params.type)
 })
 
-app.get("/animal/:id", (req, res) => {
-  console.log(req.params.id)
-  res.json(animal[req.params.id])
+app.get("/animals/:id", (req, res) => {
+  //   console.log(req.params.id)
+  res.json(animals[req.params.id])
 })
 
-
 app.listen(port, () => {
-  console.log("Listening to port ", + port)
+  console.log("Listening to port ", +port)
 })
